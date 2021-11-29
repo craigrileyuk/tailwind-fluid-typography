@@ -35,6 +35,7 @@ module.exports = {
 <h3 class="fluid-2xl">Fluid Typography @ 2XL</h3>
 <h4 class="fluid-xl">Fluid Typography @ XL</h4>
 <h5 class="fluid-lg">Fluid Typography @ LG</h5>
+<h6 class="md:fluid-lg">Fluid Typography @ LG</h6>
 <p class="fluid-base">Fluid Typography</p>
 ```
 
