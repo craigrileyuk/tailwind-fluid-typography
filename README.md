@@ -60,8 +60,8 @@ theme: {
         remSize: 14,
         minScreenSize: 600,
         maxScreenSize: 1280,
-        minTypeScale: 1.250
-        maxTypeScale: 1.618
+        minTypeScale: 1.250,
+        maxTypeScale: 1.618,
         lineHeight: 1.5
     }
 }
