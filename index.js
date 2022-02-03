@@ -60,7 +60,6 @@ const fluidTypography = function ({ addUtilities, theme }) {
   const rules = {
     ".fluid-xs": {
       fontSize: generateFluidRule(-2, fluidConfig),
-      lineHeight: fluidConfig.lineHeight,
       letterSpacing: 0.2,
     },
     ".fluid-sm": {
@@ -75,57 +74,60 @@ const fluidTypography = function ({ addUtilities, theme }) {
     },
     ".fluid-lg": {
       fontSize: generateFluidRule(1, fluidConfig),
-      lineHeight: fluidConfig.lineHeight,
       letterSpacing: "0.009375em",
     },
     ".fluid-xl": {
       fontSize: generateFluidRule(2, fluidConfig),
-      lineHeight: fluidConfig.lineHeight,
       letterSpacing: "0.0125em",
     },
     ".fluid-2xl": {
       fontSize: generateFluidRule(3, fluidConfig),
-      lineHeight: fluidConfig.lineHeight,
       letterSpacing: "normal",
     },
 
     ".fluid-3xl": {
       fontSize: generateFluidRule(4, fluidConfig),
-      lineHeight: fluidConfig.lineHeight,
       letterSpacing: "0.0073529412em",
     },
 
     ".fluid-4xl": {
       fontSize: generateFluidRule(5, fluidConfig),
-      lineHeight: fluidConfig.lineHeight,
       letterSpacing: "normal",
     },
     ".fluid-5xl": {
       fontSize: generateFluidRule(6, fluidConfig),
-      lineHeight: fluidConfig.lineHeight,
       letterSpacing: "-0.0083333333em",
     },
     ".fluid-6xl": {
       fontSize: generateFluidRule(7, fluidConfig),
-      lineHeight: fluidConfig.lineHeight,
       letterSpacing: "-0.015625em",
     },
     ".fluid-7xl": {
       fontSize: generateFluidRule(8, fluidConfig),
-      lineHeight: fluidConfig.lineHeight,
       letterSpacing: "-0.0234375em",
     },
     ".fluid-8xl": {
       fontSize: generateFluidRule(9, fluidConfig),
-      lineHeight: fluidConfig.lineHeight,
       letterSpacing: "-0.03125em",
     },
     ".fluid-9xl": {
       fontSize: generateFluidRule(10, fluidConfig),
-      lineHeight: fluidConfig.lineHeight,
       letterSpacing: "-0.04em",
     },
   };
+  /**
+   * We use CSS variables here to allow the values to be overridden if used in a .fluid-prose style
+   */
+  const lh = "--fluid-line-height";
+  const ls = "--fluid-letter-spacing";
+  Object.keys(rules).map((key) => {
+    const rule = rules[key];
+    rule[lh] =
+      rule.lineHeight?.toString() || fluidConfig.lineHeight?.toString();
+    rule[ls] = rule.letterSpacing;
+    rule.lineHeight = `var(${lh})`;
+    rule.letterSpacing = `var(${ls})`;
+  });
 
   addUtilities(rules);
 };

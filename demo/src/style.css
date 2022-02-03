@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .fluid-prose {
+    :where(h1) {
+      @apply fluid-5xl;
+    }
+  }
+}
