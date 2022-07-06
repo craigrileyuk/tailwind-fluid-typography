@@ -1,33 +1,43 @@
 {
-	"name": "tailwind-fluid-typography",
-	"version": "1.0.0",
-	"description": "Fluid typography plugin for the tailwindcss framework",
-	"main": "index.js",
-	"contributors": [
-		"Craig Riley"
-	],
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/craigrileyuk/tailwind-fluid-typography.git"
-	},
-	"keywords": [
-		"tailwind",
-		"tailwindcss",
-		"plugin",
-		"tailwindcss-plugin",
-		"typography",
-		"fluid",
-		"responsive"
-	],
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/craigrileyuk/tailwind-fluid-typography/issues"
-	},
-	"homepage": "https://github.com/craigrileyuk/tailwind-fluid-typography#readme",
-	"peerDependencies": {
-		"tailwindcss": "^1.2.0"
-	}
+  "name": "tailwind-fluid-typography",
+  "version": "1.2.0",
+  "description": "Fluid typography plugin for the tailwindcss framework",
+  "main": "index.js",
+  "contributors": [
+    "Craig Riley"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/craigrileyuk/tailwind-fluid-typography.git"
+  },
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "plugin",
+    "tailwindcss-plugin",
+    "typography",
+    "fluid",
+    "responsive"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/craigrileyuk/tailwind-fluid-typography/issues"
+  },
+  "homepage": "https://github.com/craigrileyuk/tailwind-fluid-typography#readme",
+  "peerDependencies": {
+    "tailwindcss": ">=1.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.0.0",
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.6",
+    "postcss-import": "^14.0.2",
+    "tailwindcss": "^3.0.18",
+    "vite": "^2.7.13"
+  }
 }
