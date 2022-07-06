@@ -27,6 +27,7 @@ function generateFluidRule(power, { minTypeScale, maxTypeScale, minScreenSize, m
 
 const fluidTypography = function ({ addUtilities, theme }) {
 	const fluidConfig = {};
+	const hasCustomRem = !!theme("fluidTypography.remSize");
 	/**
 	 * Suggested px value of rem. Since all browsers use 16, this is the default
 	 */
@@ -55,7 +56,7 @@ const fluidTypography = function ({ addUtilities, theme }) {
 	// letterSpacing sizes based on https://vuetifyjs.com/en/styles/text-and-typography/#typography
 	const rules = {
 		".fluid-base": {
-			fontSize: "1rem",
+			fontSize: hasCustomRem ? `${fluidConfig.remSize}px` : "1rem",
 			lineHeight: 1.4,
 			letterSpacing: 0.5,
 		},
