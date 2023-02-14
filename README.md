@@ -46,12 +46,14 @@ To customise the plugin settings, you can pass the following properties as part 
 
 | Name          | Type   | Default | Description                                       |
 | ------------- | ------ | ------- | ------------------------------------------------- |
-| remSize       | Number | 16      | The px size to assume for 1rem                    |
+| remSize       | Number | 16      | The px size to assume for 1rem ( <sup>*</sup>reference only )|
 | minScreenSize | Number | 320     | The screen size (in px) at which to begin scaling |
 | maxScreenSize | Number | 1920    | The screen size (in px) at which to stop scaling  |
 | minTypeScale  | Number | 1.2     | The scaling factor to use at minScreenSize        |
 | maxTypeScale  | Number | 1.333   | The scaling factor to use at maxScreenSize        |
 | lineHeight    | Number | 1.35    | The line-height to use for heading classes        |
+
+* *remSize is required as configuration for Tailwind to setup fluid typography classes. It does not change your actual html base REM size, you must do this yourself.*
 
 For example:
 
