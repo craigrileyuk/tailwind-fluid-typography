@@ -18,11 +18,13 @@ yarn add tailwind-fluid-typography
 
 ```js
 // tailwind.config.js
-module.exports = {
+import fluidTypography from "tailwind-fluid-typography";
+
+export default {
   theme: {
     fluidTypography: {},
   },
-  plugins: [require("tailwind-fluid-typography")],
+  plugins: [fluidTypography],
 };
 ```
 
@@ -44,16 +46,16 @@ module.exports = {
 
 To customise the plugin settings, you can pass the following properties as part of a `fluidTypography` property on `theme`:
 
-| Name          | Type   | Default | Description                                       |
-| ------------- | ------ | ------- | ------------------------------------------------- |
-| remSize       | Number | 16      | The px size to assume for 1rem ( <sup>*</sup>reference only )|
-| minScreenSize | Number | 320     | The screen size (in px) at which to begin scaling |
-| maxScreenSize | Number | 1920    | The screen size (in px) at which to stop scaling  |
-| minTypeScale  | Number | 1.2     | The scaling factor to use at minScreenSize        |
-| maxTypeScale  | Number | 1.333   | The scaling factor to use at maxScreenSize        |
-| lineHeight    | Number | 1.35    | The line-height to use for heading classes        |
+| Name          | Type   | Default | Description                                                    |
+| ------------- | ------ | ------- | -------------------------------------------------------------- |
+| remSize       | Number | 16      | The px size to assume for 1rem ( <sup>\*</sup>reference only ) |
+| minScreenSize | Number | 320     | The screen size (in px) at which to begin scaling              |
+| maxScreenSize | Number | 1920    | The screen size (in px) at which to stop scaling               |
+| minTypeScale  | Number | 1.2     | The scaling factor to use at minScreenSize                     |
+| maxTypeScale  | Number | 1.333   | The scaling factor to use at maxScreenSize                     |
+| lineHeight    | Number | 1.35    | The line-height to use for heading classes                     |
 
-* *remSize is required as configuration for Tailwind to setup fluid typography classes. It does not change your actual html base REM size, you must do this yourself.*
+- _remSize is required as configuration for Tailwind to setup fluid typography classes. It does not change your actual html base REM size, you must do this yourself._
 
 For example:
 
@@ -83,32 +85,32 @@ theme: {
 | Perfect Fifth    | 1.500 |                      |
 | Golden Ratio     | 1.618 |                      |
 
-## Fluid Prose 
+## Fluid Prose
 
 At times, you may need to render fluid typography of which you don't have direct control over the classes. Because the style requirements of this vary greatly between sites, we haven't included the functionality in the plugin itself, but it is easily implemented in your own Tailwind stylesheet:
 
 ```css
 @layer utilities {
-	.fluid-prose {
-		:where(h1) {
-			@apply fluid-5xl mb-0;
-		}
-		:where(h2) {
-			@apply fluid-4xl mb-0;
-		}
-		:where(h3) {
-			@apply fluid-3xl mb-0;
-		}
-		:where(h4) {
-			@apply fluid-2xl mb-0;
-		}
-		:where(h5) {
-			@apply fluid-xl mb-0;
-		}
-		:where(h6) {
-			@apply fluid-lg mb-0;
-		}
-	}
+  .fluid-prose {
+    :where(h1) {
+      @apply fluid-5xl mb-0;
+    }
+    :where(h2) {
+      @apply fluid-4xl mb-0;
+    }
+    :where(h3) {
+      @apply fluid-3xl mb-0;
+    }
+    :where(h4) {
+      @apply fluid-2xl mb-0;
+    }
+    :where(h5) {
+      @apply fluid-xl mb-0;
+    }
+    :where(h6) {
+      @apply fluid-lg mb-0;
+    }
+  }
 }
 ```
 
