@@ -1,4 +1,12 @@
-<img alt="Tailwind Fluid Typography" width="100" src="./.github/logo.png">
+<p align="center">
+   <img alt="Tailwind Fluid Typography" width="100" src="./.github/logo.png">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/npm/dm/tailwind-fluid-typography.svg" alt="Downloads"></a>
+  <a href="https://www.npmjs.com/package/tailwind-fluid-typography"><img src="https://img.shields.io/npm/v/tailwind-fluid-typography.svg" alt="Version"></a>
+  <a href="https://github.com/craigrileyuk/tailwind-fluid-typography/blob/main/LICENCE"><img src="https://img.shields.io/github/license/craigrileyuk/tailwind-fluid-typography?style=flat" alt="Licence"></a>
+</p>
 
 # Tailwind Fluid Typography
 
