@@ -10,6 +10,9 @@
 
 # Tailwind Fluid Typography
 
+> [!IMPORTANT]
+> For Tailwind v3 support, use version 2 of this plugin, for Tailwind v4, use version 3.
+
 Based on the fluid typography theory devised by [Mike Riethmuller](https://madebymike.com.au) and incorporating ideas from Google's Material Design spec, Tailwind Fluid Typography gives you a new set of utility classes that scale modularly depending on screen size.
 
 - Set breakpoints for when your type should start and stop scaling

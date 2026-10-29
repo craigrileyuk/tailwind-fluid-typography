@@ -1,6 +1,6 @@
 {
   "name": "tailwind-fluid-typography",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Fluid typography plugin for the tailwindcss framework",
   "main": "index.cjs",
   "module": "index.js",
@@ -36,6 +36,9 @@
   },
   "homepage": "https://github.com/craigrileyuk/tailwind-fluid-typography#readme",
   "peerDependencies": {
-    "tailwindcss": ">=1.2.0"
+    "tailwindcss": ">=4.0.0"
+  },
+  "dependencies": {
+    "es-toolkit": "^1.53.0"
   }
 }
