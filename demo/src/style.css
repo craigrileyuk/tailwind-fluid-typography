@@ -2,27 +2,3 @@
 @plugin "tailwind-fluid-typography" {
   rem-size: 14;
 }
-/* 
-@layer utilities {
-  .fluid-prose {
-    :where(h1) {
-      @apply fluid-5xl mb-0;
-    }
-    :where(h2) {
-      @apply fluid-4xl mb-0;
-    }
-    :where(h3) {
-      @apply fluid-3xl mb-0;
-    }
-    :where(h4) {
-      @apply fluid-2xl mb-0;
-    }
-    :where(h5) {
-      @apply fluid-xl mb-0;
-    }
-    :where(h6) {
-      @apply fluid-lg mb-0;
-    }
-  }
-}
- */

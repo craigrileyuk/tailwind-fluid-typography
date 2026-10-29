@@ -8,6 +8,10 @@
     "require": "./index.cjs",
     "import": "./index.js"
   },
+  "files": [
+    "index.cjs",
+    "index.js"
+  ],
   "type": "module",
   "contributors": [
     "Craig Riley"

@@ -77,10 +77,6 @@ function generateFluidRule(
   return `clamp(${r(lower)}rem, calc(${r(slope * 100)}vw ${sign} ${r(interpolation)}rem), ${r(upper)}rem)`;
 }
 
-// Line-height and letter-spacing go through CSS variables so they can be overridden (e.g. in a prose style)
-const lh = "--fluid-line-height";
-const ls = "--fluid-letter-spacing";
-
 // letterSpacing sizes based on https://vuetifyjs.com/en/styles/text-and-typography/#typography
 // A missing lineHeight falls back to the lineHeight option
 const sizes = {
@@ -99,32 +95,64 @@ const sizes = {
   "9xl": { power: 10, letterSpacing: "-0.04em" },
 };
 
-function buildUtilities(options) {
+// Registered as font-size theme entries so Tailwind generates text-fluid-* itself. That gives us
+// variants, the text-fluid-lg/6 shorthand and leading-* / tracking-* overrides for free.
+function buildFontSizes(options) {
   return Object.fromEntries(
     Object.entries(sizes).map(([name, size]) => [
-      `.text-fluid-${name}`,
-      {
+      `fluid-${name}`,
+      [
         // The root font-size is scaled to remSize in the base layer, so 1rem is already correct
-        fontSize: size.power === 0 ? "1rem" : generateFluidRule(size.power, options),
-        [lh]: size.lineHeight ?? String(options.lineHeight),
-        [ls]: size.letterSpacing,
-        lineHeight: `var(${lh})`,
-        letterSpacing: `var(${ls})`,
-      },
+        size.power === 0 ? "1rem" : generateFluidRule(size.power, options),
+        {
+          lineHeight: size.lineHeight ?? String(options.lineHeight),
+          letterSpacing: size.letterSpacing,
+        },
+      ],
     ]),
   );
 }
 
-export default plugin.withOptions((userOptions) => {
-  const options = resolveOptions(userOptions);
+// Which fluid size each heading level gets inside .fluid-prose
+const proseHeadings = { h1: "5xl", h2: "4xl", h3: "3xl", h4: "2xl", h5: "xl", h6: "lg" };
 
-  return ({ addBase, addUtilities }) => {
-    // Only override the root size when it differs from the browser default. A percentage
-    // (rather than px) keeps respecting the user's own browser font-size setting.
-    if (options.remSize !== defaults.remSize) {
-      addBase({ html: { fontSize: `${(options.remSize / defaults.remSize) * 100}%` } });
-    }
+// Declarations for .fluid-prose headings. These mirror what Tailwind generates for text-fluid-*
+// (including the --tw-leading / --tw-tracking hooks) as plugins can't use @apply
+function buildProse(options) {
+  const fontSizes = buildFontSizes(options);
 
-    addUtilities(buildUtilities(options));
-  };
-});
+  return Object.fromEntries(
+    Object.entries(proseHeadings).map(([tag, name]) => {
+      const [fontSize, { lineHeight, letterSpacing }] = fontSizes[`fluid-${name}`];
+
+      // :where() keeps specificity at zero so utility classes on a heading still win
+      return [
+        `.fluid-prose :where(${tag})`,
+        {
+          fontSize,
+          lineHeight: `var(--tw-leading, ${lineHeight})`,
+          letterSpacing: `var(--tw-tracking, ${letterSpacing})`,
+        },
+      ];
+    }),
+  );
+}
+
+export default plugin.withOptions(
+  (userOptions) => {
+    const options = resolveOptions(userOptions);
+
+    return ({ addBase, addComponents }) => {
+      // Only override the root size when it differs from the browser default. A percentage
+      // (rather than px) keeps respecting the user's own browser font-size setting.
+      if (options.remSize !== defaults.remSize) {
+        addBase({ html: { fontSize: `${(options.remSize / defaults.remSize) * 100}%` } });
+      }
+
+      addComponents(buildProse(options));
+    };
+  },
+  (userOptions) => ({
+    theme: { extend: { fontSize: buildFontSizes(resolveOptions(userOptions)) } },
+  }),
+);

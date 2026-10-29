@@ -19,67 +19,111 @@ Based on the fluid typography theory devised by [Mike Riethmuller](https://madeb
 - Dual scaling system gives you the ability to set your desired scale for your lower breakpoint and for your higher breakpoint
 - Provides xs, sm, base, lg, xl, 2xl, 3xl, 4xl, 5xl, 6xl, 7xl, 8xl and 9xl font-sizes
 
+## Migrating from v2 to v3
+
+Version 3 is a rewrite for Tailwind v4's CSS-first configuration. If you are staying on Tailwind v3, keep using version 2.
+
+**1. Move your configuration into CSS.** The plugin is no longer registered in `tailwind.config.js`, and the `theme.fluidTypography` object is no longer read. Load the plugin in your stylesheet and pass options as kebab-case properties:
+
+```diff
+-// tailwind.config.js
+-theme: {
+-  fluidTypography: { remSize: 14, minTypeScale: 1.25 },
+-},
+-plugins: [fluidTypography],
++/* app.css */
++@import "tailwindcss";
++@plugin "tailwind-fluid-typography" {
++  rem-size: 14;
++  min-type-scale: 1.25;
++}
+```
+
+**2. Rename your classes.** Every `fluid-*` class is now `text-fluid-*`, including any variants or `@apply` rules:
+
+```diff
+-<h1 class="fluid-4xl md:fluid-5xl">
++<h1 class="text-fluid-4xl md:text-fluid-5xl">
+```
+
+**3. Check your root font size.** In v2, `remSize` was reference only and you had to set your `<html>` font size yourself. In v3 the plugin does it for you: if `rem-size` is not `16`, it sets `html { font-size }` as a percentage of the browser default. Remove your own `html` font-size rule, or the two will compound.
+
+**4. Replace the `--fluid-line-height` and `--fluid-letter-spacing` variables.** These no longer exist. Sizes are now real Tailwind font sizes, so use Tailwind's own `leading-*` and `tracking-*` utilities to override a single element.
+
+**5. Remove your own `.fluid-prose` rules.** The plugin now provides `fluid-prose` itself (see [Fluid Prose](#fluid-prose)). Your own definition can stay if you want a different heading mapping.
+
+**6. Review these smaller changes:**
+
+- `xs` and `sm` now scale correctly. In v2 their `clamp()` bounds were inverted, so they never changed size.
+- Letter-spacing on `xs`, `sm` and `base` is now in `em`, so it scales with the font size, and follows Material Design's values. Previously it was a small fixed pixel value.
+- Invalid options (non-numbers, zero or negative values, or a `max-screen-size` that is not larger than `min-screen-size`) fall back to their defaults.
+- Requiring the package from CommonJS needs Node 22.12 or later.
+
 ## Installation
+
+Requires Tailwind CSS v4.
 
 ```
 npm i tailwind-fluid-typography
 // or
+pnpm add tailwind-fluid-typography
+// or
 yarn add tailwind-fluid-typography
 ```
 
-```js
-// tailwind.config.js
-import fluidTypography from "tailwind-fluid-typography";
-
-export default {
-  theme: {
-    fluidTypography: {},
-  },
-  plugins: [fluidTypography],
-};
+```css
+/* app.css */
+@import "tailwindcss";
+@plugin "tailwind-fluid-typography";
 ```
 
 ## Usage
 
 ```html
-<h1 class="fluid-4xl">Fluid Typography @ 4XL</h1>
-<h2 class="fluid-3xl">Fluid Typography @ 3XL</h2>
-<h3 class="fluid-2xl">Fluid Typography @ 2XL</h3>
-<h4 class="fluid-xl">Fluid Typography @ XL</h4>
-<h5 class="fluid-lg">Fluid Typography @ LG</h5>
-<h6 class="md:fluid-lg">Fluid Typography @ LG</h6>
-<p class="fluid-base">Fluid Typography</p>
-<p class="fluid-sm">Fluid Typography @ SM</p>
-<small class="fluid-xs">Fluid Typography @ XS</small>
+<h1 class="text-fluid-4xl">Fluid Typography @ 4XL</h1>
+<h2 class="text-fluid-3xl">Fluid Typography @ 3XL</h2>
+<h3 class="text-fluid-2xl">Fluid Typography @ 2XL</h3>
+<h4 class="text-fluid-xl">Fluid Typography @ XL</h4>
+<h5 class="text-fluid-lg">Fluid Typography @ LG</h5>
+<h6 class="md:text-fluid-lg">Fluid Typography @ LG from the md breakpoint</h6>
+<p class="text-fluid-base">Fluid Typography</p>
+<p class="text-fluid-sm">Fluid Typography @ SM</p>
+<small class="text-fluid-xs">Fluid Typography @ XS</small>
 ```
+
+The sizes are registered as Tailwind font sizes, so they work with variants and with the rest of Tailwind's typography utilities. Each size carries its own line-height and letter-spacing, which `leading-*` and `tracking-*` override on a single element:
+
+```html
+<h1 class="text-fluid-4xl leading-tight tracking-wide">Overridden line-height and tracking</h1>
+```
+
+Note that Tailwind's line-height shorthand (`text-fluid-sm/6`) replaces the size's line-height and drops its default letter-spacing.
 
 ## Customisation
 
-To customise the plugin settings, you can pass the following properties as part of a `fluidTypography` property on `theme`:
+To customise the plugin, pass options in the `@plugin` block of your stylesheet. Option names are kebab-case:
 
-| Name          | Type   | Default | Description                                                    |
-| ------------- | ------ | ------- | -------------------------------------------------------------- |
-| remSize       | Number | 16      | The px size to assume for 1rem ( <sup>\*</sup>reference only ) |
-| minScreenSize | Number | 320     | The screen size (in px) at which to begin scaling              |
-| maxScreenSize | Number | 1920    | The screen size (in px) at which to stop scaling               |
-| minTypeScale  | Number | 1.2     | The scaling factor to use at minScreenSize                     |
-| maxTypeScale  | Number | 1.333   | The scaling factor to use at maxScreenSize                     |
-| lineHeight    | Number | 1.35    | The line-height to use for heading classes                     |
+| Name              | Type   | Default | Description                                                                               |
+| ----------------- | ------ | ------- | ----------------------------------------------------------------------------------------- |
+| `rem-size`        | Number | 16      | The px size of 1rem. If not 16, the plugin sets the `<html>` font size to match           |
+| `min-screen-size` | Number | 320     | The screen size (in px) at which to begin scaling                                         |
+| `max-screen-size` | Number | 1920    | The screen size (in px) at which to stop scaling                                          |
+| `min-type-scale`  | Number | 1.2     | The scaling factor to use at `min-screen-size`                                            |
+| `max-type-scale`  | Number | 1.333   | The scaling factor to use at `max-screen-size`                                            |
+| `line-height`     | Number | 1.35    | The line-height for every size except `sm` and `base`, which use fixed values (1.5, 1.4) |
 
-- _remSize is required as configuration for Tailwind to setup fluid typography classes. It does not change your actual html base REM size, you must do this yourself._
+- _When `rem-size` is not 16, the `<html>` font size is set to `rem-size / 16` as a percentage, so your users' own browser font-size setting is still respected._
 
 For example:
 
-```js
-theme: {
-    fluidTypography: {
-        remSize: 14,
-        minScreenSize: 600,
-        maxScreenSize: 1280,
-        minTypeScale: 1.250,
-        maxTypeScale: 1.618,
-        lineHeight: 1.5
-    }
+```css
+@plugin "tailwind-fluid-typography" {
+  rem-size: 14;
+  min-screen-size: 600;
+  max-screen-size: 1280;
+  min-type-scale: 1.25;
+  max-type-scale: 1.618;
+  line-height: 1.5;
 }
 ```
 
@@ -98,31 +142,25 @@ theme: {
 
 ## Fluid Prose
 
-At times, you may need to render fluid typography of which you don't have direct control over the classes. Because the style requirements of this vary greatly between sites, we haven't included the functionality in the plugin itself, but it is easily implemented in your own Tailwind stylesheet:
+At times, you may need to render fluid typography of which you don't have direct control over the classes, such as rendered Markdown or CMS content. Add `fluid-prose` to a wrapping element and every heading inside it is sized for you:
 
-```css
-@layer utilities {
-  .fluid-prose {
-    :where(h1) {
-      @apply fluid-5xl mb-0;
-    }
-    :where(h2) {
-      @apply fluid-4xl mb-0;
-    }
-    :where(h3) {
-      @apply fluid-3xl mb-0;
-    }
-    :where(h4) {
-      @apply fluid-2xl mb-0;
-    }
-    :where(h5) {
-      @apply fluid-xl mb-0;
-    }
-    :where(h6) {
-      @apply fluid-lg mb-0;
-    }
-  }
-}
+```html
+<article class="fluid-prose">
+  <h1>Sized as text-fluid-5xl</h1>
+  <h2>Sized as text-fluid-4xl</h2>
+  <p>Paragraphs are left alone</p>
+</article>
 ```
 
-In case you were wondering, the `:where` selector comes with a CSS specificity of 0, so it is more easily overridden by other utility/custom classes than a normal `<h1>`-style rule.
+| Element | Size       |
+| ------- | ---------- |
+| `h1`    | `5xl`      |
+| `h2`    | `4xl`      |
+| `h3`    | `3xl`      |
+| `h4`    | `2xl`      |
+| `h5`    | `xl`       |
+| `h6`    | `lg`       |
+
+Only the font size, line-height and letter-spacing of headings are set. Margins and paragraph styles are left to you, because they vary greatly between sites. To size body text, add `text-fluid-base` to your content, for example with `[&_p]:text-fluid-base` on the wrapper.
+
+The rules use the `:where` selector, which has a CSS specificity of 0, so a utility class on an individual heading (such as `text-fluid-lg` or `leading-tight`) overrides it.
