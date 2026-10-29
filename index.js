@@ -1,5 +1,4 @@
 import plugin from "tailwindcss/plugin";
-import { kebabCase } from "es-toolkit";
 
 /**
  * Tailwind v4 plugin. Options are passed from CSS:
@@ -23,6 +22,9 @@ const defaults = {
   /** Relative line-height of the headings */
   lineHeight: 1.35,
 };
+
+// Option names are plain camelCase words, so a simple conversion is enough (remSize -> rem-size)
+const kebabCase = (s) => s.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
 
 // CSS-provided option values may arrive as strings, so coerce and fall back to the default
 // when a value is missing, not a number, or out of range (all of these must be positive).

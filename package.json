@@ -41,8 +41,5 @@
   "homepage": "https://github.com/craigrileyuk/tailwind-fluid-typography#readme",
   "peerDependencies": {
     "tailwindcss": ">=4.0.0"
-  },
-  "dependencies": {
-    "es-toolkit": "^1.53.0"
   }
 }
