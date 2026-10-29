@@ -25,15 +25,16 @@ const defaults = {
 };
 
 // CSS-provided option values may arrive as strings, so coerce and fall back to the default
-// when a value is missing, not a number, or out of range (all of these must be positive)
+// when a value is missing, not a number, or out of range (all of these must be positive).
+// Options are read as kebab-case (from CSS) or camelCase (from a JS config)
 function resolveOptions(options = {}) {
   const resolved = Object.fromEntries(
     Object.entries(defaults).map(([key, fallback]) => {
-      const userKey = kebabCase(key);
-      const value = Number(options[userKey]);
+      const raw = options[kebabCase(key)] ?? options[key];
+      const value = Number(raw);
       return [
         key,
-        options[userKey] !== undefined && Number.isFinite(value) && value > 0
+        raw !== undefined && Number.isFinite(value) && value > 0
           ? value
           : fallback,
       ];
